@@ -21,5 +21,4 @@ class BookByAdmin(admin.ModelAdmin):
 
 @admin.register(PassengerInfo)
 class PassengerInfoAdmin(admin.ModelAdmin):
-  list_display = ("name", "age", "contact", "discount", "route")
-
+  list_display = ("name", "age", "contact", "seat", "discount", "route")

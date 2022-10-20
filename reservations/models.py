@@ -20,7 +20,7 @@ class Reservation(models.Model):
     return self.book_by.name
 
   def passengers_count(self):
-    self.passengers.all().count()
+    return self.passengers.all().count()
     
   def get_absolute_url(self):
     return reverse("book_details", kwargs={"pk": self.pk})
