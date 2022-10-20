@@ -99,7 +99,7 @@ class ReservationView(generic.TemplateView):
         def get_seat():
           last = PassengerInfo.objects.filter(route=data['route']).order_by('seat').last()
           if last is not None and last !='':
-            return int(last)+1
+            return int(last.seat)+1
           return 1
         
         p_obj= PassengerInfo.objects.create(name=name, age=age, contact=contact, gender=gender, route=data['route'], seat=get_seat())
