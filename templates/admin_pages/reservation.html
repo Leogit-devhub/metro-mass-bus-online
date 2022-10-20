@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> Admin Panel </title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-theme.min.css' %}">
+
+		<!-- Custom CSS -->
+	<link href="{% static 'assets/css/simple-sidebar.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{% url 'home' %}">Online Ticketing Admin Panel</a>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="{% url 'reserve' %}">Reserved
+				<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+				</a></li>
+				<li class=""><a href="{% url 'transaction' %}">Transaction
+				<span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+				</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+					<li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				</ul>
+		</div>
+	</nav><br />
+
+	<div class="container">
+		<!-- DATA TABLES -->
+		<div class="row my-4">
+			<!-- Small table -->
+			<div class="col-md-12">
+				<div class="card shadow">
+					<div class="card-body">
+						<!-- table -->
+						<table class="table datatables table-striped" id="dataTable-1">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Date</th>
+									<th>Book By</th>
+									<th>Contact</th>
+									<th>Passengers</th>
+									<th>Departure Date</th>
+									<th>Session</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for reserve in reserves %}
+								{% if not reserve.approved %}
+								<tr>
+									<td>#</td>
+									<td>{{reserve.date_created|date}}</td>
+									<td>{{reserve.book_by}}</td>
+									<td>{{reserve.book_by.contact}}</td>
+									<td>{{reserve.passengers.all.count}}</td>
+									<td>{{reserve.d_date}}</td>
+									<td>{{reserve.get_session_display}}</td>
+									<td>
+										<div style="display: flex !important; justify-content: space-around;">
+											<a href="{% url 'delete_reservation' reserve.pk %}" class="btn btn-sm btn-danger">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+											</a>
+
+											<a class="btn btn-sm btn-success" href="./#" data-toggle="modal" data-target=".modal-{{reserve.pk}}">
+												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+											</a>
+										</div>
+
+										<div class="modal fade modal-{{reserve.pk}}" id="" role="dialog" aria-labelledby="modal_{{reserve.pk}}" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<form action="." method="post">
+													{% csrf_token %}		
+
+													{% include 'utils/modal/accept_payment.html' %}
+													
+													</form>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								{% endif %}
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div> <!-- simple table -->
+		</div> 
+ 	 	<!-- end section -->
+
+	</div>
+
+
+	<script type="text/javascript" src="{% static 'assets/js/jquery-3.1.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/dataTables.bootstrap.min.js '%}"></script>
+
+  <script>
+    $('#dataTable-1').DataTable(
+      {
+        autoWidth: true,
+        "lengthMenu": [
+          [16, 32, 64, -1],
+          [16, 32, 64, "All"]
+        ]
+      });
+  </script>
+</body>
+</html>

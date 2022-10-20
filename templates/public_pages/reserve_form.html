@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Online Ticket Rerservation</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-theme.min.css' %}">
+
+	<style>
+		.d-none{display: none;}
+		.justify-content-between{display: flex; justify-content: space-between !important;}
+	</style>
+</head>
+
+<body style="background-color: lightblue;">
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Online Ticketing</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li class="active">
+					<a href="#">Rerservation
+					<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{% url 'home' %}"><span class="glyphicon glyphicon-backward"></span> Back To Home</a></li>
+			</ul>
+		</div>
+	</nav>
+
+
+	<div class="container-fluid">
+		<div class="col-md-1"></div>
+
+		<div class="col-md-10">
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h3 class="panel-title">STEPS FOR BOOKING</h3>
+				</div>
+
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">1. ITINERARY
+									</h3>
+								</div>
+
+								<div class="panel-body">SCHEDULE OF TRAVEL</div>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="panel panel-success">
+								<div class="panel-heading">
+									<h3 class="panel-title">2. PASSENGER INFO
+										<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+									</h3>
+								</div>
+
+								<div class="panel-body">PASSENGER DETAILS</div>
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="panel panel-warning">
+								<div class="panel-heading">
+									<h3 class="panel-title">3. PAYMENT INFO</h3>
+								</div>
+
+								<div class="panel-body">TOTAL PAYMENT</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="col-md-4"></div>
+	
+		<div class="col-md-4">
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong>Message!</strong> Please review your passenger information.
+				You cannot change your reservation once you proceed.
+			</div>
+	
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h2>
+						<center>PASSENGER INFO</center>
+					</h2>
+	
+					<div class="container-fluid">
+						<form class="form-horizontal" role="form" id="form-pass" method="POST">
+							{% csrf_token %} 
+
+							{{book_by_form}}<br />
+							
+							{{p_form.management_form}}
+							{% for form in p_form %}
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Passenger {{form.prefix|last}}</h3>
+								</div>
+	
+								<div class="panel-body">
+									{{form}}
+								</div>
+							</div>
+							{% endfor %}
+							
+							<div class="justify-content-between">
+								<a href="{% url 'reserve' %}" class="btn btn-success">PREV
+									<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+								</a>
+								<button type="submit" class="btn btn-success">Submit
+									<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+
+
+	<script type="text/javascript" src="{% static 'assets/js/jquery-3.1.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+	<script type="text/javascript">
+		$(document).on('submit', '#form-itinerary', function(event) {
+			event.preventDefault();
+			/* Act on the event */
+			var validate = "";
+			var origin = $('select[id=orig-id]').val();
+			var dest = $('select[id=dest-id]').val();
+			var dept = $('input[id=dept-date]').val();
+
+			if(dept.length == 0){
+				alert('Please Select Departure Date!');
+			}
+
+
+		});
+
+	</script>
+
+	{% comment %} <script type="text/javascript">
+		function nextStep1(){
+			document.getElementById('step1').classList.add('d-none');
+			document.getElementById('step2').classList.remove('d-none');
+			document.getElementById('step3').classList.add('d-none');
+		}
+		function nextStep2(){
+			document.getElementById('step1').classList.add('d-none');
+			document.getElementById('step2').classList.add('d-none');
+			document.getElementById('step3').classList.remove('d-none');
+		}
+		function prevStep2(){
+			document.getElementById('step1').classList.remove('d-none');
+			document.getElementById('step2').classList.add('d-none');
+			document.getElementById('step3').classList.add('d-none');
+		}
+		function nextStep3(){
+			document.getElementById('step1').classList.add('d-none');
+			document.getElementById('step2').classList.add('d-none');
+			document.getElementById('step3').classList.add('d-none');
+		}
+		function prevStep3(){
+			document.getElementById('step1').classList.add('d-none');
+			document.getElementById('step2').classList.remove('d-none');
+			document.getElementById('step3').classList.add('d-none');
+		}
+	</script> {% endcomment %}
+</body>
+</html>

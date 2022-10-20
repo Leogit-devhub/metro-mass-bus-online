@@ -1,0 +1,65 @@
+
+			<div class="modal-header">
+				<h5 class="modal-title" id="modal_{{reserve.pk}}">User</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<center>
+					<strong>Book By: </strong><span id="book-by">{{reserve.book_by.name}}</span> <br />
+					<strong>Departure Date: </strong><span id="date">{{reserve.d_date}}</span> <br />
+					<strong>Contact: </strong><span id="contact">{{reserve.book_by.contact}}</span> <br />
+					<strong>Address: <br /></strong><span id="address">{{reserve.book_by.address}}</span><br />
+					{% for passenger in reserve.passengers.all %}
+						<strong>Route: </strong><span id="route">{{passenger.route}}</span><br />
+					{% endfor %}
+				</center><hr />
+
+				<div>
+					<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<td>Name</td>
+								<td>Contact</td>
+								<td>Age</td>
+								<td>Gender</td>
+								<td>Discount</td>
+								<td>Price</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for passenger in reserve.passengers.all %}
+							<tr align="center">
+								<td>{{passenger.name}}</td>
+								<td>{{passenger.contact}}</td>
+								<td>{{passenger.age}}</td>
+								<td>{{passenger.get_gender_display}}</td>
+								<td>
+									<select name="disc" id="" class="btn btn-default">
+									{% for disc in discount %}
+										<option value="0">.....</option>
+										<option value="{{disc.pk}}">{{disc}}</option>
+									{% endfor %}
+									</select>
+								</td>
+								<td>{{passenger.get_price|floatformat:2}}</td>
+								<input type="hidden" name="pk" value="{{passenger.pk}}">
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" onclick="acceptPayment();" class="btn btn-primary accept-pay">Compute
+				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+				</button>
+
+				<button type="submit" name="reserve" value="{{reserve.pk}}" class="btn btn-success accept-pay">Accept Payment
+				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+				</button>
+			</div>
+
