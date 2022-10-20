@@ -320,15 +320,6 @@ h2 {
   padding-top: 3%;
 }
 
-.about-content {
-  width: 50%;
-   background-image: url("../images/about-bg.jpg");
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 70px 70px 110px;
-}
-
 
 #about h2 {
   margin-bottom: 23px;
@@ -356,17 +347,6 @@ h2 {
 /*************************
 ******Twitter CSS****
 **************************/
-
-#twitter {
-  background-color: #ecedef;
-  background-image: url("../images/twitter-bg.jpg");
-  background-position: center bottom;
-  background-size: cover;
-  background-repeat:no-repeat;
-  position: relative;
-  padding: 95px 0 90px;
-  overflow: hidden;
-}
 
 .twit {
   position: absolute;
@@ -420,19 +400,6 @@ h2 {
 } 
 
 
-
-/*************************
-******Sponsor CSS****
-**************************/
-
-#sponsor {
-  background-color: #1881a2;
-  background-image: url("../images/sponsor-bg.jpg");
-  background-position:50% 0;
-  background-size: cover;
-  background-repeat:no-repeat;
-  position: relative;
-}
 
 .light {
   position: absolute;
@@ -495,18 +462,6 @@ h2 {
 }
 
 
-/*************************
-******Contact CSS****
-**************************/
-
-.contact-section {
-  background-color: #f7ab24;
-  background-image: url("../images/contact-bg.jpg");
-  background-position:60% 0;
-  background-size:contain;
-  background-repeat:no-repeat;  
-  position: relative;
-}
 
 .ear-piece {
   position: absolute;
@@ -575,22 +530,6 @@ h2 {
   color: #fff
 }
 
-
-
-/*************************
-******Footer CSS****
-**************************/
-
-#footer {
-  background-color: #212121;
-  background-image: url("../images/footer-bg.jpg");
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  color: #FFFFFF;
-  font-size: 20px;
-  padding: 35px 0;
-}
 
 #footer a {
   color:#f7ab24
