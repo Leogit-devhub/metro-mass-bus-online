@@ -244,18 +244,6 @@ h2 {
 
 /*************************
 *******Explore CSS******
-**************************/
-
-#explore {
-  background-color: #C34C39;
-  background-image: url("../images/event-bg.jpg");
-  background-position: center bottom;
-  background-size: contain;
-  background-repeat:no-repeat;
-  position: relative;
-  overflow: hidden;
-  padding: 130px 0 100px;
-}
 
 .watch {
   position: absolute;
