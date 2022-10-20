@@ -9,6 +9,9 @@ django-heroku = "*"
 gunicorn = "*"
 python-decouple = "*"
 whitenoise = "*"
+requests = "*"
+python-dateutil = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

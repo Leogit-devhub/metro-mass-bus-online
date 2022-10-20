@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load paystack %}
 <html lang="">
 <head>
 	<meta charset="utf-8">
@@ -188,11 +189,12 @@
 								<strong>- TICKET FOR: {{book.get_route|upper}}</strong>
 						</table>
 
-						<center>
+						<div style="display:flex; justify-content: space-around;">
 							<a href="index.html" class="btn btn-success">Return Home
 								<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
 							</a>
-						</center>
+							{% paystack_button amount=book.get_total_price currency='GHS' email="text@devhub.com" button_class="btn btn-success" redirect_url="/?" %}
+						</div>
 					</div>
 				</div>
 			</div>

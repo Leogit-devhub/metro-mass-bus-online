@@ -27,6 +27,7 @@ DEFAULT_APPS = [
 ]
 
 LOCAL_APPS = [
+    'paystack',
     'reservations',
     'utils',
 ]
@@ -136,5 +137,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
+
+# PAYSTACK SETTINGS
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
 
 django_heroku.settings(locals())
