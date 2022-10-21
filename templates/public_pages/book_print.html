@@ -35,60 +35,6 @@
 		</div>
 	</nav>
 
-
-	<div class="container-fluid">
-		<div class="col-md-1"></div>
-
-		<div class="col-md-10">
-			<div class="panel panel-danger">
-				<div class="panel-heading">
-					<h3 class="panel-title">STEPS FOR BOOKING</h3>
-				</div>
-
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-4">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">1. ITINERARY
-									</h3>
-								</div>
-
-								<div class="panel-body">
-									SCHEDULE OF TRAVEL
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="panel panel-success">
-								<div class="panel-heading">
-									<h3 class="panel-title">3. PASSENGER INFO</h3>
-								</div>
-
-								<div class="panel-body">PASSENGER DETAILS</div>
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="panel panel-warning">
-								<div class="panel-heading">
-									<h3 class="panel-title">4. PAYMENT INFO
-										<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-									</h3>
-								</div>
-
-								<div class="panel-body">TOTAL PAYMENT</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-1"></div>
-	</div>
-
 	<div class="container-fluid">
 		<div class="col-md-3"></div>
 
@@ -172,7 +118,7 @@
 										<td></td>
 										<td align="right"><strong>TOTAL:</strong></td>
 										<td></td>
-										<td align="center"><strong>GHC{{book.get_total_price}}</strong></td>
+										<td align="center"><strong>{{book.get_total_price}}</strong></td>
 									</tr>
 								</tbody>
 
@@ -184,7 +130,7 @@
 								<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
 							</a>
 
-							{% paystack_button amount=book.get_total_price currency='GHS' email="text@devhub.com" button_class="btn btn-success" redirect_url=book.get_print_url %}
+							<button type="button" onclick="printTicket('print_here')" class="btn btn-success mr-2">Print</button>
 						</div>
 					</div>
 				</div>

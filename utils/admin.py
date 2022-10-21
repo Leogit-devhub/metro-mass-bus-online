@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import BookBy, Discount, Town, Route, PassengerInfo
+from .models import BookBy, Town, Route, PassengerInfo
 
 
 @admin.register(Town)
@@ -10,10 +10,6 @@ class TownAdmin(admin.ModelAdmin):
 @admin.register(Route)
 class RouteAdmin(admin.ModelAdmin):
   list_display = ("origin", "to", "price")
-  
-@admin.register(Discount)
-class DiscountAdmin(admin.ModelAdmin):
-  pass
 
 @admin.register(BookBy)
 class BookByAdmin(admin.ModelAdmin):
@@ -21,4 +17,4 @@ class BookByAdmin(admin.ModelAdmin):
 
 @admin.register(PassengerInfo)
 class PassengerInfoAdmin(admin.ModelAdmin):
-  list_display = ("name", "age", "contact", "seat", "discount", "route")
+  list_display = ("name", "age", "contact", "seat", "route")

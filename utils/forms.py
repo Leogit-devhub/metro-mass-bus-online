@@ -6,32 +6,13 @@ from reservations.models import Reservation
 
 from .models import BookBy, PassengerInfo, Route, Town
 
-class TownForm(forms.ModelForm):
-  def __init__(self, *args, **kwargs):
-    super(TownForm, self).__init__(*args, **kwargs)
-    self.fields["name"].widget.attrs.update({
-      'id':'name',
-      'name':'name',
-      'class': '',
-    })
-    self.fields["desc"].widget.attrs.update({
-      'id':'desc',
-      'name':'desc',
-      'class': '',
-    })
-    
-  class Meta:
-    model = Town
-    fields = ("name", "desc")
-
-
 class ReservationInitialForm(forms.ModelForm):    
   origin = forms.ModelChoiceField(queryset=Town.objects.all(), label="From")
   to = forms.ModelChoiceField(queryset=Town.objects.all())
-  book_for = forms.ChoiceField(choices=(('initial', "Select"), ('self', 'Self'), ('others', 'Others')),)
+  book_for = forms.ChoiceField(choices=(('', "Select your gender"), ('self', 'Self'), ('others', 'Others')),)
   d_date = forms.DateField(required=True, label="Departure date", widget=forms.DateInput(attrs={'type':'date', 'min': str(datetime.today().date())}))
-  session = forms.ChoiceField(choices=(('initial', "Session"), ('m', 'Morning'), ('a', 'Afternoon'), ('e', 'Evening'),))
-  num_of_passengers = forms.IntegerField(widget=forms.NumberInput())
+  session = forms.ChoiceField(choices=(('', "Select a session to join"), ('m', 'Morning'), ('a', 'Afternoon'), ('e', 'Evening'),))
+  num_of_passengers = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1',}))
   
   def __init__(self, *args, **kwargs):
     super(ReservationInitialForm, self).__init__(*args, **kwargs)

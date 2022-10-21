@@ -52,11 +52,11 @@
 									<th>Date</th>
 									<th>Name</th>
 									<th>Contact</th>
-									<th>Seat #</th>
+									<th>Seat</th>
 									<th>Route</th>
 									<th>Payment</th>
-									<th>D Date</th>
-									<th>D Session</th>
+									<th>D_Date</th>
+									<th>Session</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -71,22 +71,32 @@
 										<td>{{passenger.contact}}</td>
 										<td>{{passenger.seat}}</td>
 										<td>{{passenger.route}}</td>
-										<td>{{passenger.get_price}}</td>
+										<td>GHC{{passenger.get_price}}</td>
 										<td>{{obj.d_date}}</td>
 										<td>{{obj.get_session_display}}</td>
 										<td>
-											<form action="." method="post">
-												{% csrf_token %}
 											<div style="display: flex !important; justify-content: space-around;">
 												<a href="{% url 'delete_passenger' passenger.pk %}" class="btn btn-sm btn-danger" value="{{passenger.pk}}">
 												<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 												</a>
 
-												<a class="btn btn-sm btn-success" href="./#" data-toggle="modal" data-target=".modal-{{reserve.pk}}">
+												<a class="btn btn-sm btn-success" href="./#" data-toggle="modal" data-target=".modal-{{passenger.pk}}">
 													<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 												</a>
+												
+												<div class="modal fade modal-{{passenger.pk}}" id="" role="dialog" aria-labelledby="modal_{{passenger.pk}}" aria-hidden="true">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<form action="." method="post">
+															{% csrf_token %}		
+
+															{% include 'utils/modal/passenger_info.html' %}
+															
+															</form>
+														</div>
+													</div>
+												</div>
 											</div>
-											</form>
 										</td>
 									</tr>
 									{% endfor %}

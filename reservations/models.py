@@ -24,6 +24,9 @@ class Reservation(models.Model):
     
   def get_absolute_url(self):
     return reverse("book_details", kwargs={"pk": self.pk})
+  
+  def get_print_url(self):
+    return reverse("book_print", kwargs={"pk": self.pk})
 
   def get_total_price(self):
     prices = []

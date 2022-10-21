@@ -32,16 +32,7 @@ class BookBy(models.Model):
   
   def __str__(self):
       return self.name
-  
-  
-class Discount(models.Model):
-  desc = models.TextField()
-  discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-  date = models.DateTimeField(auto_now_add = True)
-    
-  def __str__(self):
-    return f"{self.desc} - ({self.discount}%)"
-  
+
   
 class PassengerInfo(models.Model):
   Gender = (
@@ -58,9 +49,7 @@ class PassengerInfo(models.Model):
   contact = models.CharField(max_length=13)
   
   gender = models.CharField(choices=Gender, max_length=120, null=True, blank=True)
-  
-  discount = models.ForeignKey(Discount, related_name="passenger_disc", on_delete=models.SET_NULL, max_length=120, null=True, blank=True)
-  
+
   seat = models.SmallIntegerField(null=True, blank=True)
   
   date = models.DateTimeField(auto_now_add = True)
@@ -69,8 +58,4 @@ class PassengerInfo(models.Model):
     return self.name
   
   def get_price(self):
-    price=self.route.price
-    if self.discount:
-      return price-(price*(self.discount.discount/100))
-    return price
-   
+    return self.route.price

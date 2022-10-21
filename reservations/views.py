@@ -1,22 +1,26 @@
+from datetime import datetime, time
 from django.utils.http import urlencode
-from django.contrib.auth import mixins, logout
+from django.contrib.auth import mixins
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.http import JsonResponse
 from django.views import generic
+from django.contrib import messages
 from django.forms import formset_factory
 from reservations.models import Reservation
+from django.contrib.auth.forms import UserCreationForm
 
 from utils.forms import BookByForm, PassengerForm, ReservationInitialForm
-from utils.models import Discount, PassengerInfo, Route, Town
-from .forms import ReservationForm
+from utils.models import PassengerInfo, Route, Town
 
+class CreateUser(generic.CreateView):
+  template_name = 'registration/signup.html'
+  form_class = UserCreationForm
+  success_url = reverse_lazy('reserve')
 
 class IndexView(generic.TemplateView):
   template_name = 'index.html'
   form = ReservationInitialForm
   
-
 class ReservationInitialView(generic.TemplateView):
   template_name = 'reservation_init_form.html'
   form = ReservationInitialForm
@@ -28,28 +32,58 @@ class ReservationInitialView(generic.TemplateView):
     })
     return context
 
+  def validation(self, session, date):
+    c_date = str(datetime.today().date())
+    c_hour = int(datetime.today().time().hour)
+    print(date)
+    print(c_date)
+    if str(date) != c_date:
+      return True
+    elif session=='m' and c_hour <= 5:
+      return True
+    elif session=='a' and c_hour <= 11:
+      return True
+    elif session=='e' and c_hour <= 18:
+      return True
+    return False
+    
   def post(self, request):
-    form = self.form(request.POST)  
+    form = self.form(request.POST)
+    session = form.data['session']
+    d_date = form.data['d_date']
+    book_for = form.data['book_for']
+    validation = self.validation(session=session, date=d_date)
+    print(validation)
     data_dict = {}
-    if  form.is_valid(): 
+    if  form.is_valid():  
+      origin = form.data['origin']
+      to = form.data['to']
       try:
-        route = Route.objects.get(origin=form.data['origin'], to=form.data['to']).pk
+        route = Route.objects.get(origin=origin, to=to).pk
       except Exception as errors:
+        origin = Town.objects.get(pk=origin)
+        to = Town.objects.get(pk=to)
         route = None
-        print(errors)
+        messages.error(request, f"Seems we have no route for {origin} to {to}. Sorry for that")
         
-      if route:
+      if route and validation and book_for !='':
         data_dict.update([ 
           ('route', route),  
-          ('book_for', form.data['book_for']),
-          ('session', form.data['session']),
-          ('d_date', form.data['d_date']),
+          ('book_for', book_for),
+          ('session', session),
+          ('d_date', d_date),
           ('num_of_passengers', form.data['num_of_passengers'])
         ])
         
         url = '{}?{}'.format(reverse('reservation_form'), urlencode(data_dict))
         return redirect(url)
-    
+      
+      if not validation:
+        messages.error(request, f"Seems you've not selected a session or the session is currently no availabe !")
+      
+      if book_for == '':
+        messages.error(request, f"Seems you've not selected a 'book for' !")
+      
     return render(request, self.template_name, context={
       'form': form,
     })
@@ -117,18 +151,13 @@ class ReservationDetailsView(generic.DetailView):
   template_name = 'book_details.html'
   model = Reservation
   context_object_name = 'book'
- 
-  def get_context_data(self, **kwargs):
-    context = super(ReservationDetailsView, self).get_context_data(**kwargs)
-    context.update({
-      "p_form": formset_factory(PassengerForm, extra=4),
-      "r_form": ReservationForm,
-    })
-    return context
 
-  def post(self, request):
-    pass
-  
+
+class ReservationPrintView(generic.DetailView):
+  template_name = 'book_print.html'
+  model = Reservation
+  context_object_name = 'book'
+ 
   
 class AdminTransactionView(mixins.LoginRequiredMixin, generic.ListView):
   queryset = Reservation.objects.filter(approved = True)
@@ -142,9 +171,6 @@ class AdminTransactionView(mixins.LoginRequiredMixin, generic.ListView):
       "towns": Town.objects.all(),
     })
     return context
-
-  def post(self, request):
-    pass
   
   
 class AdminReservedView(mixins.LoginRequiredMixin, generic.ListView):
@@ -157,29 +183,14 @@ class AdminReservedView(mixins.LoginRequiredMixin, generic.ListView):
     context = super(AdminReservedView, self).get_context_data(**kwargs)
     context.update({
       "towns": Town.objects.all(),
-      "discount": Discount.objects.all() 
     })
     return context
 
   def post(self, request):
-    pk = request.POST['pk']
-    reserve = request.POST['reserve']
-    try:
-      disc = Discount.objects.get(pk=request.POST['disc']) 
-    except:
-      disc = '0'
-      
-    if pk and pk != '' and disc != '0':
-      obj=PassengerInfo.objects.get(pk=pk)
-      obj.discount = disc
-      obj.save()
-      
-      r=Reservation.objects.get(pk=reserve)
-      r.approved=True
-      r.save()
-      
+    r=Reservation.objects.get(pk=request.POST['reserve'])
+    r.approved=True
+    r.save()
     return redirect('reserve')
-
 
 
 class DeletePassenger(generic.DeleteView):

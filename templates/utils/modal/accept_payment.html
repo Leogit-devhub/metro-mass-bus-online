@@ -25,7 +25,6 @@
 								<td>Contact</td>
 								<td>Age</td>
 								<td>Gender</td>
-								<td>Discount</td>
 								<td>Price</td>
 							</tr>
 						</thead>
@@ -36,16 +35,7 @@
 								<td>{{passenger.contact}}</td>
 								<td>{{passenger.age}}</td>
 								<td>{{passenger.get_gender_display}}</td>
-								<td>
-									<select name="disc" id="" class="btn btn-default">
-									{% for disc in discount %}
-										<option value="0">.....</option>
-										<option value="{{disc.pk}}">{{disc}}</option>
-									{% endfor %}
-									</select>
-								</td>
 								<td>{{passenger.get_price|floatformat:2}}</td>
-								<input type="hidden" name="pk" value="{{passenger.pk}}">
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -54,10 +44,6 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" onclick="acceptPayment();" class="btn btn-primary accept-pay">Compute
-				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-				</button>
-
 				<button type="submit" name="reserve" value="{{reserve.pk}}" class="btn btn-success accept-pay">Accept Payment
 				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 				</button>
