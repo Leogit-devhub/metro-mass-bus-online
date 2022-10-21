@@ -9,9 +9,9 @@ from .models import BookBy, PassengerInfo, Route, Town
 class ReservationInitialForm(forms.ModelForm):    
   origin = forms.ModelChoiceField(queryset=Town.objects.all(), label="From")
   to = forms.ModelChoiceField(queryset=Town.objects.all())
-  book_for = forms.ChoiceField(choices=(('', "Select who to book for "), ('self', 'Self'), ('others', 'Others')),)
+  book_for = forms.ChoiceField(choices=(('', "......."), ('self', 'Self'), ('others', 'Others')),)
   d_date = forms.DateField(required=True, label="Departure date", widget=forms.DateInput(attrs={'type':'date', 'min': str(datetime.today().date())}))
-  session = forms.ChoiceField(choices=(('', "Select a session to join"), ('m', 'Morning'), ('a', 'Afternoon'), ('e', 'Evening'),))
+  session = forms.ChoiceField(choices=(('', "........"), ('m', 'Morning'), ('a', 'Afternoon'), ('e', 'Evening'),))
   num_of_passengers = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1',}))
   
   def __init__(self, *args, **kwargs):
