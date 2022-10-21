@@ -7,5 +7,4 @@ from .models import Reservation
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-  add_form_template = 'reservation_init_form.html'
   list_display = ("book_by", "passengers_count", "session", "d_date", "approved")
