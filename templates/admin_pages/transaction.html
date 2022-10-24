@@ -54,7 +54,7 @@
 									<th>Contact</th>
 									<th>Seat</th>
 									<th>Route</th>
-									<th>Payment</th>
+									<th>Bus</th>
 									<th>D_Date</th>
 									<th>Session</th>
 									<th>Action</th>
@@ -71,9 +71,9 @@
 										<td>{{passenger.contact}}</td>
 										<td>{{passenger.seat}}</td>
 										<td>{{passenger.route}}</td>
-										<td>GHC{{passenger.get_price}}</td>
+										<td>{{obj.bus}}</td>
 										<td>{{obj.d_date}}</td>
-										<td>{{obj.get_session_display}}</td>
+										<td>{{obj.session.time}}</td>
 										<td>
 											<div style="display: flex !important; justify-content: space-around;">
 												<a href="{% url 'delete_passenger' passenger.pk %}" class="btn btn-sm btn-danger" value="{{passenger.pk}}">

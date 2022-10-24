@@ -10,11 +10,12 @@
 				<center>
 					<strong>Book By: </strong><span id="book-by">{{reserve.book_by.name}}</span> <br />
 					<strong>Departure Date: </strong><span id="date">{{reserve.d_date}}</span> <br />
+					<strong>Departure Session: </strong><span id="date">{{reserve.session}}</span> <br />
 					<strong>Contact: </strong><span id="contact">{{reserve.book_by.contact}}</span> <br />
-					<strong>Address: <br /></strong><span id="address">{{reserve.book_by.address}}</span><br />
-					{% for passenger in reserve.passengers.all %}
-						<strong>Route: </strong><span id="route">{{passenger.route}}</span><br />
-					{% endfor %}
+					<strong>Address: </strong><span id="address">{{reserve.book_by.address}}</span><br />
+					{% comment %} {% for passenger in passengers.all %} {% endcomment %}
+						<strong>Route: </strong><span id="route">{{reserve.passengers.first.route}}</span><br />
+					{% comment %} {% endfor %} {% endcomment %}
 				</center><hr />
 
 				<div>
@@ -25,6 +26,7 @@
 								<td>Contact</td>
 								<td>Age</td>
 								<td>Gender</td>
+								<td>Seat</td>
 								<td>Price</td>
 							</tr>
 						</thead>
@@ -35,6 +37,7 @@
 								<td>{{passenger.contact}}</td>
 								<td>{{passenger.age}}</td>
 								<td>{{passenger.get_gender_display}}</td>
+								<td>{{passenger.seat}}</td>
 								<td>{{passenger.get_price|floatformat:2}}</td>
 							</tr>
 							{% endfor %}

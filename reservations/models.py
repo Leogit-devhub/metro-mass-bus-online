@@ -1,17 +1,13 @@
 from django.db import models
 from django.urls import reverse
 
-from utils.models import BookBy, PassengerInfo, Route
+from utils.models import BookBy, Buse, PassengerInfo, Route, Session
 
 class Reservation(models.Model):
-  Sessions = (
-    ('m', 'Morning'),
-    ('a', 'Afternoon'),
-    ('e', 'Evening'),
-  )
-  book_by = models.ForeignKey(BookBy, related_name="book_by", on_delete=models.CASCADE, null=True, blank=True)
-  passengers = models.ManyToManyField(PassengerInfo, related_name="passenger", null=True, blank=True)
-  session = models.CharField(choices=Sessions, max_length=120)
+  book_by = models.ForeignKey(BookBy, related_name="book_by", on_delete=models.CASCADE, help_text = "Clik on 'plus' button to add a new 'book by'.")
+  passengers = models.ManyToManyField(PassengerInfo, related_name="passenger", null=True, blank=True, help_text = "Click on the 'plus' button to add a passenger !")
+  bus = models.ForeignKey(Buse, related_name="reservation_bus", on_delete=models.CASCADE)
+  session = models.ForeignKey(Session, related_name="reservation_session", on_delete=models.CASCADE)
   d_date = models.DateField(max_length=120)
   date_created = models.DateTimeField(auto_now_add = True)
   approved = models.BooleanField(default=False)

@@ -101,6 +101,15 @@
 				<strong>Message!</strong> Please review your passenger information.
 				You cannot change your reservation once you proceed.
 			</div>
+			
+			{% if messages %}
+			{% for msg in messages %}
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong>Oops ! {{msg}}.</strong> 
+			</div>
+			{% endfor %}
+			{% endif %}
 	
 			<div class="panel panel-default">
 				<div class="panel-body">

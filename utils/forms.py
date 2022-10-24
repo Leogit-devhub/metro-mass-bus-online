@@ -4,14 +4,14 @@ from django.contrib import admin
 
 from reservations.models import Reservation
 
-from .models import BookBy, PassengerInfo, Route, Town
+from .models import BookBy, PassengerInfo, Route, Session, Town, UserMessage
 
 class ReservationInitialForm(forms.ModelForm):    
   origin = forms.ModelChoiceField(queryset=Town.objects.all(), label="From")
   to = forms.ModelChoiceField(queryset=Town.objects.all())
   book_for = forms.ChoiceField(choices=(('', "......."), ('self', 'Self'), ('others', 'Others')),)
   d_date = forms.DateField(required=True, label="Departure date", widget=forms.DateInput(attrs={'type':'date', 'min': str(datetime.today().date())}))
-  session = forms.ChoiceField(choices=(('', "........"), ('m', 'Morning'), ('a', 'Afternoon'), ('e', 'Evening'),))
+  session = forms.ModelChoiceField(queryset=Session.objects.all())
   num_of_passengers = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1',}))
   
   def __init__(self, *args, **kwargs):
@@ -56,7 +56,6 @@ class ReservationInitialForm(forms.ModelForm):
     model = PassengerInfo
     fields = ('origin',)
     
-
  
 class RouteForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
@@ -139,6 +138,37 @@ class PassengerForm(forms.ModelForm):
     fields = ("name", "age", "contact", "gender")
     
 
-
-class ReservationInitialAdminForm(admin.ModelAdmin):
-  form = ReservationInitialForm
+class UserMessageForm(forms.ModelForm):
+  def __init__(self, *args, **kwargs):
+    super(UserMessageForm, self).__init__(*args, **kwargs)
+    self.fields["name"].widget.attrs.update({
+      'id':'name',
+      'name':'name',
+      'type': 'text',
+      'class': 'form-control',
+    })
+    self.fields["phone"].widget.attrs.update({
+      'id':'phone',
+      'name':'phone',
+      'min':'10',
+      'class': 'form-control',
+    })
+    self.fields["email"].widget.attrs.update({
+      'id':'email',
+      'name':'email',
+      'class': 'form-control',
+    })
+    self.fields["purpose"].widget.attrs.update({
+      'id':'purpose',
+      'name':'purpose',
+      'class': 'form-control',
+    })
+    self.fields["details"].widget.attrs.update({
+      'id':'details',
+      'name':'details',
+      'class': 'form-control',
+    })
+  class Meta:
+    model = UserMessage
+    fields = ("name", "phone", "email", "purpose", "details")
+    

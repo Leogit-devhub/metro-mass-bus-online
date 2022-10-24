@@ -66,7 +66,7 @@
 									<td>{{reserve.book_by.contact}}</td>
 									<td>{{reserve.passengers.all.count}}</td>
 									<td>{{reserve.d_date}}</td>
-									<td>{{reserve.get_session_display}}</td>
+									<td>{{reserve.session.time}}</td>
 									<td>
 										<div style="display: flex !important; justify-content: space-around;">
 											<a href="{% url 'delete_reservation' reserve.pk %}" class="btn btn-sm btn-danger">

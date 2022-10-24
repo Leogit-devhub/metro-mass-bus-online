@@ -1,6 +1,6 @@
 
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal_{{passenger.pk}}">User</h5>
+				<h3 class="modal-title" id="modal_{{passenger.pk}}">passenger Info</h3>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -8,7 +8,7 @@
 
 			<div class="modal-body">
 				<div>
-					<strong>PASSENGER INFO</strong><hr />
+					<center><strong class="center-block">SEAT {{passenger.seat}} IN BUS {{obj.bus}}</strong></center><hr />
 
 					<strong>Name: </strong><span id="book-by">{{passenger.name}}</span> <br />
 					<strong>Contact: </strong><span id="contact">{{passenger.contact}}</span> <br />
@@ -17,8 +17,8 @@
 					
 					<strong>Route: </strong><span id="route">{{passenger.route}}</span><br />
 					<strong>Departure Date: </strong><span id="date">{{obj.d_date}}</span> <br />
-					<strong>Departure Session: </strong><span id="date">{{obj.get_session_display}}</span> <br />
-					<strong>Price: </strong><span id="date">{{passenger.get_price}}</span> <br />
+					<strong>Departure Session: </strong><span id="date">{{obj.session}}</span> <br />
+					<strong>Price: </strong><span id="date">GHC{{passenger.get_price}}</span> <br />
 				</div>
 			</div>
 

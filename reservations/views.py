@@ -9,8 +9,8 @@ from django.forms import formset_factory
 from reservations.models import Reservation
 from django.contrib.auth.forms import UserCreationForm
 
-from utils.forms import BookByForm, PassengerForm, ReservationInitialForm
-from utils.models import PassengerInfo, Route, Town
+from utils.forms import BookByForm, PassengerForm, ReservationInitialForm, UserMessageForm
+from utils.models import Buse, PassengerInfo, Route, Session, Town
 
 class CreateUser(generic.CreateView):
   template_name = 'registration/signup.html'
@@ -19,7 +19,25 @@ class CreateUser(generic.CreateView):
 
 class IndexView(generic.TemplateView):
   template_name = 'index.html'
-  form = ReservationInitialForm
+  form = UserMessageForm
+  
+  def get_context_data(self, **kwargs):
+    context = super(IndexView, self).get_context_data(**kwargs)
+    context.update({
+      "form": self.form,
+    })
+    return context
+
+  def post(self, request, *args, **kwargs):
+    form = self.form(request.POST)
+    if form.is_valid():
+      form.save()
+      messages.success(request, 'Form Submitted Successfully !')
+      return redirect('/')
+    
+    return render(request, self.template_name, context={
+      'form': form,
+    })
   
 class ReservationInitialView(generic.TemplateView):
   template_name = 'reservation_init_form.html'
@@ -35,15 +53,16 @@ class ReservationInitialView(generic.TemplateView):
   def validation(self, session, date):
     c_date = str(datetime.today().date())
     c_hour = int(datetime.today().time().hour)
-    print(date)
-    print(c_date)
+    try:
+      session = Session.objects.get(pk=session)
+    except:
+      session = None
+    print(session)
+    print(session.time.hour)
+    print(c_hour)
     if str(date) != c_date:
       return True
-    elif session=='m' and c_hour <= 5:
-      return True
-    elif session=='a' and c_hour <= 11:
-      return True
-    elif session=='e' and c_hour <= 18:
+    elif session is not None and c_hour <= session.time.hour:
       return True
     return False
     
@@ -79,7 +98,7 @@ class ReservationInitialView(generic.TemplateView):
         return redirect(url)
       
       if not validation:
-        messages.error(request, f"Seems you've not selected a session or the session is currently no availabe !")
+        messages.error(request, f"Seems you've not selected a session or the session is currently not availabe for the said date!")
       
       if book_for == '':
         messages.error(request, f"Seems you've not selected a 'book for' !")
@@ -96,13 +115,21 @@ class ReservationView(generic.TemplateView):
   def data(self):
     route = Route.objects.get(pk=self.request.GET.get('route')) 
     d_date = self.request.GET.get('d_date')
-    session = self.request.GET.get('session')
+    session = Session.objects.get(pk=self.request.GET.get('session'))
     num_of_passengers = self.request.GET.get('num_of_passengers')
     data = {}
     
     data.update([('route', route), ('session', session),  ('d_date', d_date), ('num_of_passengers', int(num_of_passengers))])
     return data
   
+  
+  def _bus(self, p_count):
+    buses = Buse.objects.filter(route = self.data['route']).order_by('date')
+    for bus in buses:
+      if bus.bus_full(p_count):
+        return bus
+    return None   
+
   def get_context_data(self, **kwargs):
     context = super(ReservationView, self).get_context_data(**kwargs)
     context.update({
@@ -115,12 +142,12 @@ class ReservationView(generic.TemplateView):
     forms_count = self.data()['num_of_passengers']
     form = self.book_by_form(request.POST)
     formset = formset_factory(PassengerForm, extra=forms_count)(request.POST)
-    data = self.data()
-    
-    if form.is_valid() and formset.is_valid():
+    data = self.data()   
+     
+    if form.is_valid() and formset.is_valid() and _bus() is not None:
       book_by_obj = form.save()
       
-      obj = Reservation.objects.create(book_by=book_by_obj, session=data['session'], d_date=data['d_date'])
+      obj = Reservation.objects.create(book_by=book_by_obj, bus=_bus(), session=data['session'], d_date=data['d_date'])
       
       while forms_count > 0:
         name = formset.data[f"form-{forms_count-1}-name"]
@@ -141,6 +168,7 @@ class ReservationView(generic.TemplateView):
       
       return redirect('book_details', obj.pk)
     
+    messages.error(request, "No Available bus for data['route']). You may call an admin on (024 130 1463)")
     return render(request, self.template_name, context={
       'book_by_form': form,
       'p_form': formset,

@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
+
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'),
@@ -90,6 +91,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
