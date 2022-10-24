@@ -123,7 +123,7 @@ class ReservationView(generic.TemplateView):
     return data
   
   
-  def _bus(self, p_count):
+  def get_bus(self, p_count):
     buses = Buse.objects.filter(route = self.data['route']).order_by('date')
     for bus in buses:
       if bus.bus_full(p_count):
@@ -144,10 +144,10 @@ class ReservationView(generic.TemplateView):
     formset = formset_factory(PassengerForm, extra=forms_count)(request.POST)
     data = self.data()   
      
-    if form.is_valid() and formset.is_valid() and self._bus(forms_count) is not None:
+    if form.is_valid() and formset.is_valid() and self.get_bus(forms_count) is not None:
       book_by_obj = form.save()
       
-      obj = Reservation.objects.create(book_by=book_by_obj, bus=self._bus(forms_count), session=data['session'], d_date=data['d_date'])
+      obj = Reservation.objects.create(book_by=book_by_obj, bus=self.get_bus(forms_count), session=data['session'], d_date=data['d_date'])
       
       while forms_count > 0:
         name = formset.data[f"form-{forms_count-1}-name"]
