@@ -168,7 +168,7 @@ class ReservationView(generic.TemplateView):
       
       return redirect('book_details', obj.pk)
     
-    messages.error(request, "No Available bus for data['route']). You may call an admin on (024 130 1463)")
+    messages.error(request, f"No Available bus for {data['route']}. You may call an admin on (024 130 1463)")
     return render(request, self.template_name, context={
       'book_by_form': form,
       'p_form': formset,
