@@ -124,7 +124,7 @@ class ReservationView(generic.TemplateView):
   
   
   def get_bus(self, p_count):
-    buses = Buse.objects.filter(route = self.data['route']).order_by('date')
+    buses = Buse.objects.filter(route = self.data()['route']).order_by('date')
     for bus in buses:
       if bus.bus_full(p_count):
         return bus
