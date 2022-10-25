@@ -57,8 +57,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#home" class="page-scroll"><h3>Home</h3></a></li>
             <li><a href="#one" class="page-scroll"><h3>About</h3></a></li>
-            <li><a href="#three" class="page-scroll"><h3>Services</h3></a></li>
-            <li><a href="#four" class="page-scroll"><h3>Contact</h3></a></li>
+            <li><a href="#contact" class="page-scroll"><h3>Contact</h3></a></li>
             {% if user.is_authenticated %}
             {% if user.is_staff %}
             <li><a href="{% url 'reserve' %}" class="page-scroll"><h3>Dashboard</h3></a></li>
@@ -146,7 +145,7 @@
     <!-- [CONTACT]=============================-->
     
     <!--sub-form-->
-    <section class="sub-form text-center" id="eight">
+    <section class="sub-form text-center" id="contact">
       <div class="container">
         <div class="col-md-12">
           <h3 class="title">Stack Somewhere ? or <br/><span class="themecolor"> Need a general walk through of our system?</span></h3>

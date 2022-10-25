@@ -3,7 +3,6 @@ from django.db import models
 
 class Town(models.Model):
   name = models.CharField(max_length=120, help_text = "Name of the town ! Required.")
-  desc = models.TextField(null=True, blank=True, help_text = "Bus stops or any ! Not Required.")
   date = models.DateTimeField(auto_now_add = True)
   
   def __str__(self):
@@ -11,8 +10,8 @@ class Town(models.Model):
 
 
 class Route(models.Model):
-  origin = models.ForeignKey(Town, related_name="route_from", on_delete=models.CASCADE)
-  to = models.ForeignKey(Town, related_name="route_to", on_delete=models.CASCADE)
+  origin = models.ForeignKey(Town, related_name="route_from", on_delete=models.CASCADE,)
+  to = models.ForeignKey(Town, related_name="route_to", on_delete=models.CASCADE,)
   price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
   date = models.DateTimeField(auto_now_add = True)
   
@@ -33,7 +32,7 @@ class Session(models.Model):
 
 
 class BookBy(models.Model):
-  name = models.CharField(max_length=120)
+  name = models.CharField(("Booked by"), max_length=120)
   contact = models.CharField(max_length=120)
   address = models.TextField(max_length=120)
   
@@ -46,10 +45,10 @@ class Buse(models.Model):
   driver_contact = models.CharField(max_length=13)
   bus_number = models.CharField(max_length=50,)
   seats = models.SmallIntegerField(help_text = "Number of seats/passenger this bus can take")
-  route = models.ForeignKey(Route, related_name="bus_route", on_delete=models.CASCADE)
-  session = models.ForeignKey(Session, related_name="bus_session", on_delete=models.CASCADE)
+  route = models.ForeignKey(Route, related_name="bus_route", on_delete=models.CASCADE,)
+  session = models.ForeignKey(Session, related_name="bus_session", on_delete=models.CASCADE,)
   d_date = models.DateField(max_length=120)
-  date = models.DateTimeField(auto_now=False, auto_now_add=False)
+  date = models.DateTimeField(auto_now=False, auto_now_add=True)
     
   class Meta:
     constraints = [
@@ -76,7 +75,7 @@ class PassengerInfo(models.Model):
     ('o', 'Others'),
   )
   
-  route = models.ForeignKey(Route, related_name="ticket_route", on_delete=models.CASCADE)
+  route = models.ForeignKey(Route, related_name="ticket_route", on_delete=models.CASCADE,  default='')
   
   name = models.CharField(max_length=120)
   
