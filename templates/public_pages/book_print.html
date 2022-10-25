@@ -50,11 +50,14 @@
 						<div class="panel-body">
 							<strong>
 								<i>Metro Mass Transport, Mother of all transports</i>
-								<h3>BOOK FOR BUS {{book.pk}}</h3>
+								<h3>Bus Number: {{book.bus}}</h3>
+								<h3>Driver: {{book.bus.driver_name}} ({{book.bus.driver_contact}})</h3>
 								<p>Departure Date: {{book.d_date}}</p>
+								<p>Session: {{book.session}}</p>
+								<p>Seats covered: {{book.passengers.first.seat}} - {{book.passengers.first.seat}}</p>
 							</strong>
 
-							<i>Estimated Arrival Time: {{book.d_date}} @3:00PM</i><br />
+							<i>Estimated Arrival Time: {{book.d_date}}, {{book.session}}</i><br />
 							<strong>Info: (+233)24 130 1463</strong>
 						</div>
 					</div>
@@ -97,6 +100,10 @@
 											</th>
 
 											<th>
+												<center>Seat</center>
+											</th>
+
+											<th>
 											<center>Departure Price</center>
 											</th>
 										</tr>
@@ -109,6 +116,7 @@
 										<td>{{passenger.contact}}</td>
 										<td>{{passenger.age}}</td>
 										<td>{{passenger.get_gender_display}}</td>
+										<td>{{passenger.seat}}</td>
 										<td>{{passenger.route.price}}</td>
 									</tr>
 									{% endfor %}
@@ -116,9 +124,10 @@
 									<tr>
 										<td></td>
 										<td></td>
+										<td></td>
 										<td align="right"><strong>TOTAL:</strong></td>
 										<td></td>
-										<td align="center"><strong>{{book.get_total_price}}</strong></td>
+										<td align="center"><strong>GHC{{book.get_total_price}}</strong></td>
 									</tr>
 								</tbody>
 
