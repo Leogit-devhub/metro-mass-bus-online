@@ -1,17 +1,13 @@
 from datetime import datetime
 from django import forms
-from django.contrib import admin
-
-from reservations.models import Reservation
-
 from .models import BookBy, PassengerInfo, Route, Session, Town, UserMessage
 
 class ReservationInitialForm(forms.ModelForm):    
-  origin = forms.ModelChoiceField(queryset=Town.objects.all(), label="From")
-  to = forms.ModelChoiceField(queryset=Town.objects.all())
-  book_for = forms.ChoiceField(choices=(('', "......."), ('self', 'Self'), ('others', 'Others')),)
+  origin = forms.ModelChoiceField(queryset=Town.objects.all(), label="From", empty_label='')
+  to = forms.ModelChoiceField(queryset=Town.objects.all(), empty_label='')
+  book_for = forms.ChoiceField(choices=(('', " "), ('self', 'Self'), ('others', 'Others')),)
   d_date = forms.DateField(required=True, label="Departure date", widget=forms.DateInput(attrs={'type':'date', 'min': str(datetime.today().date())}))
-  session = forms.ModelChoiceField(queryset=Session.objects.all())
+  session = forms.ModelChoiceField(queryset=Session.objects.all(), empty_label='')
   num_of_passengers = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1',}))
   
   def __init__(self, *args, **kwargs):
@@ -19,12 +15,14 @@ class ReservationInitialForm(forms.ModelForm):
     self.fields["origin"].widget.attrs.update({
       'id':'origin',
       'name':'origin',
+      'placeholder': ' ',
       'class': 'btn btn-default form-control'
     })
     
     self.fields["to"].widget.attrs.update({
       'id':'to',
       'name':'to',
+      'placeholder': ' ',
       'class': 'btn btn-default form-control'
     })
     
@@ -93,6 +91,7 @@ class BookByForm(forms.ModelForm):
     self.fields["contact"].widget.attrs.update({
       'id':'booked_by_contact',
       'name':'contact',
+      'min': '10',
       'class':'form-control'
     })
     self.fields["address"].widget.attrs.update({
@@ -109,6 +108,7 @@ class BookByForm(forms.ModelForm):
     
 
 class PassengerForm(forms.ModelForm):
+  gender = forms.ChoiceField(choices=(('', ""), ('m', 'Male'), ('f', 'Female'), ('o', 'Others')), required=True)
   def __init__(self, *args, **kwargs):
     super(PassengerForm, self).__init__(*args, **kwargs)
     self.fields["name"].widget.attrs.update({
@@ -136,8 +136,8 @@ class PassengerForm(forms.ModelForm):
   class Meta:
     model = PassengerInfo
     fields = ("name", "age", "contact", "gender")
-    
 
+    
 class UserMessageForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super(UserMessageForm, self).__init__(*args, **kwargs)

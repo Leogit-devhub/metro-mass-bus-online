@@ -50,15 +50,13 @@
 						<div class="panel-body">
 							<strong>
 								<i>Metro Mass Transport, Mother of all transports</i>
-								<h3>Bus Number: {{book.bus}}</h3>
-								<h3>Driver: {{book.bus.driver_name}} ({{book.bus.driver_contact}})</h3>
-								<p>Departure Date: {{book.d_date}}</p>
-								<p>Session: {{book.session}}</p>
-								<p>Seats covered: {{book.passengers.first.seat}} - {{book.passengers.first.seat}}</p>
+								<h4>Bus Number: {{book.bus}}</h4>
+								<h4>Driver: {{book.bus.driver_name}} ({{book.bus.driver_contact}})</h4>
+								<p>Seats covered: {{book.passengers.first.seat}} - {{book.passengers.last.seat}}</p>
 							</strong>
 
-							<i>Estimated Arrival Time: {{book.d_date}}, {{book.session}}</i><br />
-							<strong>Info: (+233)24 130 1463</strong>
+							<i>Estimated Arrival Time: {{book.d_date}}, {{book.session}}</i><br /><br/>
+							<strong>For More Info, Contact Admin (+233)24 130 1463</strong>
 						</div>
 					</div>
 
